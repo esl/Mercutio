@@ -1,0 +1,22 @@
+language: erlang
+
+branches:
+  only:
+    - master
+
+otp_release:
+  - 21.0
+
+sudo: required
+
+services:
+  - docker
+
+before_script:
+  - travis/before_script.sh
+
+script:
+  - travis/script.sh
+
+after_script:
+  - travis/after_script.sh
