@@ -5,9 +5,10 @@
   {mod, { mercutio_app, []}},
   {applications,
    [kernel,
-    stdlib
+    stdlib,
+    escalus
    ]},
-  {env,[]},
+  {env,[{config_file, "mercutio.cfg"}]},
   {modules, []},
 
   {maintainers, []},
