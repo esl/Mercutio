@@ -19,12 +19,12 @@ To run mercutio we need to start XMPP server/cluster first.
 docker network create mim_cluster
 
 docker run --rm -d -t -h mongooseim-1 --name mongooseim-1 \
-           -v `pwd`/travis/config_files/ejabberd.cfg:/member/ejabberd.cfg \
+           -v `pwd`/ci_testing/config_files/ejabberd.cfg:/member/ejabberd.cfg \
            --network=mim_cluster -p 5222:5222 -p 8888:8888 \
            mongooseim/mongooseim:3.1.1
 
 docker run --rm -d -t -h mongooseim-2 --name mongooseim-2 \
-           -v `pwd`/travis/config_files/ejabberd.cfg:/member/ejabberd.cfg \
+           -v `pwd`/ci_testing/config_files/ejabberd.cfg:/member/ejabberd.cfg \
            --network=mim_cluster -p 8889:8888 \
            mongooseim/mongooseim:3.1.1
 ```

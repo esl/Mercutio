@@ -32,6 +32,5 @@ jobs:
           wget -O bin/rebar3 https://s3.amazonaws.com/rebar3/rebar3
           chmod a+x bin/rebar3
           echo "${PWD}/bin" >> "$GITHUB_PATH"
-      - run: travis/before_script.sh
-      - run: travis/script.sh
-      - run: travis/after_script.sh
+      - run: ci_testing/start_xmpp_cluster.sh
+      - run: ci_testing/run_test.sh
