@@ -49,4 +49,4 @@ FROM common
 COPY --from=intermediate /app /app
 ENV PATH="$PATH:/app/bin"
 
-CMD ["/bin/bash", "-c", "mercutio"]
+CMD ["/bin/bash", "-c", "mercutio foreground"]
