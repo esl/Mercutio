@@ -1,4 +1,4 @@
-mercutio
+mercutio [![CI](https://github.com/esl/Mercutio/workflows/CI/badge.svg)](https://github.com/esl/Mercutio/actions?query=workflow%3ACI)
 --------
 
 A demo XMPP component based on [escalus](https://github.com/esl/escalus).
