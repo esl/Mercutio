@@ -4,5 +4,5 @@
 set -e
 
 rebar3 ct
-
 rebar3 dialyzer
+rebar3 xref
