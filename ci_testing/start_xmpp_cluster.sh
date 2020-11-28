@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
 
 ####################################################################
-## build mercutio docker container
-####################################################################
-if ! docker images -q mercutio | grep ".*"; then
-	docker build --force-rm -t mercutio ./
-	docker image prune -f 
-fi
-
-####################################################################
 ## start MIM cluster
 ####################################################################
 docker network create mim_cluster

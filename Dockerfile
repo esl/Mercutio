@@ -7,14 +7,16 @@ FROM common as intermediate
 ##################################################################################
 ## Install erlang
 ##################################################################################
-ADD https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb /tmp/
+ARG otp_vsn=22.3.4
+
+ADD https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb /tmp/
 ADD https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc /tmp/
 
-RUN apt-get update
 RUN apt-get -y install gnupg2
-RUN dpkg -i /tmp/erlang-solutions_1.0_all.deb
+RUN dpkg -i /tmp/erlang-solutions_2.0_all.deb
 RUN apt-key add /tmp/erlang_solutions.asc
-RUN apt-get -y install erlang
+RUN apt-get update
+RUN apt-get -y install esl-erlang=1:${otp_vsn}-1
 
 ##################################################################################
 ## Install rebar & git
@@ -34,7 +36,7 @@ RUN apt-get -y install build-essential
 ##################################################################################
 WORKDIR /git
 COPY . /git
-RUN rm -rf _build/
+RUN git clean -ffxd
 
 RUN rebar3 tar
 
