@@ -36,6 +36,14 @@ jobs:
           wget -O bin/rebar3 https://s3.amazonaws.com/rebar3/rebar3
           chmod a+x bin/rebar3
           echo "${PWD}/bin" >> "$GITHUB_PATH"
-      - run: ci_testing/build_mercutio_image.sh ${{matrix.otp}}
-      - run: ci_testing/start_xmpp_cluster.sh
-      - run: ci_testing/run_test.sh
+      - name: Update Mercutio dependencies
+        run: rebar3 upgrade
+      - name: Ensure that rebar.lock is updated in PR
+        if: ${{ github.event_name == 'pull_request' }}
+        run: git diff --quiet rebar.lock
+      - name: Build Mercutio docker image
+        run: ci_testing/build_mercutio_image.sh ${{matrix.otp}}
+      - name: Start XMPP cluster (with connected Mercutio component) for testing
+        run: ci_testing/start_xmpp_cluster.sh
+      - name: Execute tests
+        run: ci_testing/run_test.sh
