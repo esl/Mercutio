@@ -44,16 +44,18 @@ export PING_TIMEOUT="3600000"
 then we can start mercutio
 
 ```
-_build/default/rel/mercutio/bin/mercutio
+_build/default/rel/mercutio/bin/mercutio console
 ```
 
 Test
 ----
 don't forget to add some new users if you want to test mercutio component manually using some external XMPP client software
+
 ```
 docker exec -it mongooseim-1 /usr/lib/mongooseim/bin/mongooseimctl register bob localhost makrolika
 docker exec -it mongooseim-1 /usr/lib/mongooseim/bin/mongooseimctl register alice localhost makota
 ```
+
 another option is to use escalus for client connections, you can run the next commands just in mercutio shell:
 
 1. register some new users (skip this step if you have done it using `docker exec ...` commands):
