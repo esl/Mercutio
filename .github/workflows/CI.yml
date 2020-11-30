@@ -40,7 +40,7 @@ jobs:
         run: rebar3 upgrade
       - name: Ensure that rebar.lock is updated in PR
         if: ${{ github.event_name == 'pull_request' }}
-        run: git diff --quiet rebar.lock
+        run: git diff --exit-code rebar.lock
       - name: Build Mercutio docker image
         run: ci_testing/build_mercutio_image.sh ${{matrix.otp}}
       - name: Start XMPP cluster (with connected Mercutio component) for testing
