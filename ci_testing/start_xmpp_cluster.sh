@@ -1,19 +1,11 @@
 #!/usr/bin/env bash
 
 ####################################################################
-## build mercutio docker container
-####################################################################
-if ! docker images -q mercutio | grep ".*"; then
-	docker build --force-rm -t mercutio ./
-	docker image prune -f 
-fi
-
-####################################################################
 ## start MIM cluster
 ####################################################################
 docker network create mim_cluster
 
-mim_config_file="$(pwd)/travis/config_files/ejabberd.cfg"
+mim_config_file="$(pwd)/ci_testing/config_files/ejabberd.cfg"
 
 docker run --rm -dt -h mongooseim-1 --name mongooseim-1 \
            -v "$mim_config_file":/member/ejabberd.cfg   \
@@ -30,7 +22,7 @@ sleep 60
 ####################################################################
 ## start mercutio
 ####################################################################
-mercutio_config_file="$(pwd)/travis/config_files/mercutio.cfg"
+mercutio_config_file="$(pwd)/ci_testing/config_files/mercutio.cfg"
 docker run --rm -dt --name mercutio                 \
            -v "$mercutio_config_file":/mercutio.cfg \
            -e "MERCUTIO_CONFIG=/mercutio.cfg"       \

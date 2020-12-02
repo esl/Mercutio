@@ -10,13 +10,17 @@ on:
   pull_request:
     branches: [ master ]
 
+  # Run this workflow every day
+  schedule:
+    - cron: '0 0 * * *'
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   test:
     name: OTP ${{matrix.otp}}
     strategy:
       matrix:
-        otp: ['21.0']
+        otp: ['22.3.4', '23.1']
     runs-on: 'ubuntu-20.04'
     steps:
       - uses: actions/checkout@v2
@@ -32,6 +36,21 @@ jobs:
           wget -O bin/rebar3 https://s3.amazonaws.com/rebar3/rebar3
           chmod a+x bin/rebar3
           echo "${PWD}/bin" >> "$GITHUB_PATH"
-      - run: travis/before_script.sh
-      - run: travis/script.sh
-      - run: travis/after_script.sh
+      - name: Update Mercutio dependencies
+        run: rebar3 upgrade
+      - name: Ensure that rebar.lock is updated in PR
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          git diff --exit-code rebar.lock || {
+            echo "please update rebar.lock file by running:"
+            echo "   rebar3 upgrade"
+            echo "if that doesn't help, ensure that you have the latest"
+            echo "version of rebar3 installed in your system"
+            false
+          }
+      - name: Build Mercutio docker image
+        run: ci_testing/build_mercutio_image.sh ${{matrix.otp}}
+      - name: Start XMPP cluster (with connected Mercutio component) for testing
+        run: ci_testing/start_xmpp_cluster.sh
+      - name: Execute tests
+        run: ci_testing/run_test.sh
