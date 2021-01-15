@@ -5,19 +5,18 @@ RUN apt-get update
 RUN apt-get -y install apt-utils openssl
 
 FROM common as intermediate
+
 ##################################################################################
 ## Install erlang
 ##################################################################################
-ARG otp_vsn=22.3.4
-
-ADD https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb /tmp/
-ADD https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc /tmp/
-
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y install gnupg2
+
+ADD https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb /tmp/
 RUN dpkg -i /tmp/erlang-solutions_2.0_all.deb
-RUN apt-key add /tmp/erlang_solutions.asc
 RUN apt-get update
+
+ARG otp_vsn=22.3.4
 RUN apt-get -y install esl-erlang=1:${otp_vsn}-1
 
 ##################################################################################
